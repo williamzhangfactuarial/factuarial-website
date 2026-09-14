@@ -15,4 +15,5 @@ npx wrangler login
 npx wrangler deploy
 ```
 
-Cloudflare serves the static HTML directly. No framework or build step is needed.
+Cloudflare serves the static HTML. `worker.mjs` redirects HTTP visits to HTTPS.
+No framework or build step is needed.
