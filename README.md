@@ -1,6 +1,7 @@
 # factuarial.insure
 
-A black page with "Hello world". Edit `public/index.html` to change it.
+A photo centered on a black page. Edit `public/index.html` or replace
+`public/photo.png` to change it.
 
 Preview locally:
 
