@@ -24,18 +24,16 @@ test('all published pages have the shared identity, footer and valid local asset
     assert.ok(nav.indexOf('>Careers<') < nav.indexOf('>Contact<'));
   }
 });
-test('homepage actions reach a focusable offering section and shared credentials are emphasized', async () => {
+test('homepage actions reach offerings and credentials remain on Capacity Partners', async () => {
   const home = await readFile('public/index.html', 'utf8');
   assert.match(home, /class="button-link" href="\/#offerings"[^>]*>Explore our offerings/);
   assert.match(home, /class="hero-actions">[\s\S]*?href="\/contact"[^>]*>Get in touch/);
   assert.match(home, /id="offerings" tabindex="-1" aria-label="Our offerings"/);
-  assert.ok(home.indexOf('id="offerings"') < home.indexOf('Our experience'));
-  assert.ok(home.indexOf('Our experience') < home.indexOf('class="company-contact"'));
-  for (const file of ['index.html', 'products/capacity-partners.html']) {
-    const html = await readFile(`public/${file}`, 'utf8');
-    assert.ok(html.replace(/<\/?strong>/g, '').includes(teamExperience.text));
-    for (const name of teamExperience.emphasis) assert.ok(html.includes(`<strong>${name}</strong>`));
-  }
+  assert.doesNotMatch(home, /company-experience|Our experience/);
+  assert.ok(home.indexOf('id="offerings"') < home.indexOf('class="company-contact"'));
+  const capacity = await readFile('public/products/capacity-partners.html', 'utf8');
+  assert.ok(capacity.replace(/<\/?strong>/g, '').includes(teamExperience.text));
+  for (const name of teamExperience.emphasis) assert.ok(capacity.includes(`<strong>${name}</strong>`));
 });
 test('engineering examples preserve the scope and qualification without repeating the inline list', async () => {
   const html = await readFile('public/products/robotics.html', 'utf8');

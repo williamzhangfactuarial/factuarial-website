@@ -1,5 +1,5 @@
 import { mkdir, writeFile, rm } from 'node:fs/promises';
-import { products, teamExperience } from '../src/products.mjs';
+import { products } from '../src/products.mjs';
 
 const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 const link = (href, label, extra = '', className = 'text-link') => `<a class="${className}" href="${href}" ${extra}>${escape(label)} <span aria-hidden="true">→</span></a>`;
@@ -66,7 +66,6 @@ const home = `
       <section class="offerings" id="offerings" tabindex="-1" aria-label="Our offerings">
         ${products.map(p => `<article class="offering"><h2>For ${escape(p.label.toLowerCase())}</h2><div><p>${p.slug === 'robotics' ? `${escape(p.summary.replace(/ they do\.$/, ''))}<br class="desktop-break"> <span class="keep-together">they do.</span>` : escape(p.summary)}</p>${link('/products/' + p.slug, 'Our offering', `aria-label="Our offering for ${escape(p.label.toLowerCase())}"`)}</div></article>`).join('\n        ')}
       </section>
-      <section class="support-section company-experience"><h2>Our experience</h2><div class="prose"><p>${emphasize(teamExperience.text, teamExperience.emphasis)}</p></div></section>
       <section class="company-contact"><h2>We’d love to hear from you.</h2><p><a class="button-link" href="/contact">Get in touch</a> <span>or email us at <a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</span></p></section>`;
 
 await mkdir('public/products', { recursive: true });
