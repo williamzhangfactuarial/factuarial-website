@@ -58,7 +58,7 @@ nav{display:flex;flex-wrap:wrap;align-items:center;gap:28px}
 .opening.is-fitted .illustration img{height:100%;object-fit:contain}
 .opening+.offering-details{padding-top:24px}
 .offerings{border-top:1px solid var(--mist)}
-#offerings{scroll-margin-top:24px}
+#offerings{scroll-margin-top:48px}
 #offerings:focus-visible{outline:2px solid var(--green);outline-offset:6px}
 .offering{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;padding:28px 0;border-bottom:1px solid var(--mist)}
 .offering h2{font-size:1.75rem;max-width:360px}
@@ -127,6 +127,7 @@ input:hover,textarea:hover,select:hover{border-color:var(--stone)}
 .error-page p{margin:28px 0}
 @media(max-width:800px){
   .page{width:calc(100% - 48px)}
+  #offerings{scroll-margin-top:24px}
   .site-header{gap:22px;padding:24px 0 20px}nav{gap:20px}
   .products-panel{left:auto;right:-70px}
   .offering,.support-section{gap:32px;grid-template-columns:1fr 1.25fr}
