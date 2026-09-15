@@ -42,7 +42,8 @@ nav{display:flex;flex-wrap:wrap;align-items:center;gap:28px}
 .products-panel a span{flex-shrink:0}
 .hero{padding-top:48px;max-width:800px}
 .company-hero h1{max-width:700px}
-.intro{max-width:720px;color:var(--stone);margin-top:20px;line-height:1.7}
+.intro{max-width:720px;color:var(--graphite);margin-top:20px;line-height:1.7}
+.hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px 24px;margin-top:24px}
 .eyebrow{color:var(--stone);font-size:.9375rem;margin-bottom:16px}
 .product-hero h1{max-width:790px}
 .product-hero .intro{max-width:760px}
@@ -53,13 +54,15 @@ nav{display:flex;flex-wrap:wrap;align-items:center;gap:28px}
 .illustration{margin:0 -10px;isolation:isolate;background:var(--paper)}
 .illustration img{width:100%;height:auto;display:block;mix-blend-mode:darken;mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 6%,#000 93%,transparent);mask-composite:intersect}
 .opening.is-fitted{min-height:var(--opening-height)}
-.opening.is-fitted .illustration{height:var(--illustration-height);margin-top:auto}
+.opening.is-fitted .illustration{height:var(--illustration-height)}
 .opening.is-fitted .illustration img{height:100%;object-fit:contain}
 .opening+.offering-details{padding-top:24px}
 .offerings{border-top:1px solid var(--mist)}
+#offerings{scroll-margin-top:24px}
+#offerings:focus-visible{outline:2px solid var(--green);outline-offset:6px}
 .offering{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;padding:28px 0;border-bottom:1px solid var(--mist)}
 .offering h2{font-size:1.75rem;max-width:360px}
-.offering p{max-width:550px;color:var(--stone);margin-bottom:8px}
+.offering p{max-width:550px;color:var(--graphite);margin-bottom:8px}
 .keep-together{white-space:nowrap}
 .text-link{display:inline-flex;gap:14px;align-items:center;min-height:44px;text-decoration:none;font-size:.9375rem}
 .text-link:hover{text-decoration:underline}
@@ -82,11 +85,15 @@ tbody th{padding-right:56px}
 tbody td{color:var(--graphite)}
 .coverage-table tbody td,.needs-table tbody th{font-weight:700;color:var(--green)}
 .mobile-column-label{display:none}
-.table-note{color:var(--stone);max-width:780px;margin:24px 0 0}
+.table-note{color:var(--graphite);max-width:780px;margin:24px 0 0}
 .support-section{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;margin-top:56px}
 .support-section h2{font-size:2rem;max-width:340px}
 .prose p+p{margin-top:20px}
-.prose{color:var(--stone);min-width:0}
+.prose{color:var(--graphite);min-width:0}
+.engineering-examples{background:#ebece6;border:1px solid var(--mist);padding:24px;margin:24px 0}
+.engineering-examples h3{font:700 1rem/1.6 var(--mono);color:var(--green);margin:0 0 16px}
+.engineering-examples ul{list-style:none;margin:0;padding:0}
+.engineering-examples li+li{border-top:1px solid var(--mist);margin-top:12px;padding-top:12px}
 .qualification{font-size:.875rem;padding-top:8px}
 .closing-cta{padding:56px 0 64px}
 .closing-cta h2{font-size:2.25rem;margin-bottom:20px;max-width:740px}
@@ -98,6 +105,8 @@ tbody td{color:var(--graphite)}
 .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 label{display:block;font-size:.875rem;margin-bottom:8px}
 .optional{color:var(--stone)}
+.field-guidance{margin:0 0 12px;font-size:1rem;line-height:1.6}
+.submission-note{margin-bottom:20px;max-width:600px}
 input,select,textarea{border:1px solid #b7bab0;border-radius:2px;background:transparent;width:100%;padding:12px 14px;line-height:1.6;box-shadow:none;font-size:1rem}
 select{min-height:51px;padding-right:24px}
 textarea{resize:vertical;min-height:160px}
@@ -140,6 +149,8 @@ input:hover,textarea:hover,select:hover{border-color:var(--stone)}
   .intro{margin-top:18px;line-height:1.7}
   .eyebrow{font-size:.875rem;margin-bottom:14px}
   .hero-statement{margin-top:16px}
+  .hero-actions{align-items:flex-start;flex-direction:column;gap:8px;margin-top:22px}
+  .hero-actions .button-link{gap:16px}
   .opening{--opening-top:32px;--opening-gap:24px;--opening-bottom:28px}
   .opening+.offering-details{padding-top:8px}
   .offering,.support-section{grid-template-columns:1fr;gap:12px}
@@ -160,6 +171,7 @@ input:hover,textarea:hover,select:hover{border-color:var(--stone)}
   .table-note{font-size:1rem}
   .support-section{margin-top:44px;gap:18px}
   .support-section h2{font-size:1.875rem;max-width:none}
+  .engineering-examples{padding:20px}
   .closing-cta{padding:44px 0 48px}
   .field-pair{grid-template-columns:1fr;gap:0}
   .contact-form{padding-top:30px;padding-bottom:48px}

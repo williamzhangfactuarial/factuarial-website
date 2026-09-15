@@ -1,3 +1,8 @@
+export const teamExperience = {
+  text: 'Our team includes award-winning researchers with experience at Corgi (YC S24), Ford, the University of Calgary, and the University of Waterloo.',
+  emphasis: ['Corgi (YC S24)', 'Ford', 'the University of Calgary', 'the University of Waterloo']
+};
+
 export const products = [
   {
     slug: 'robotics', audience: 'robotics', label: 'Robotics companies & operators', image: 'robotics',
@@ -15,8 +20,9 @@ export const products = [
     ],
     note: 'We work with you and your broker to examine how coverage handles software failures, physical damage from cyber events, and robots at customer sites.',
     sectionTitle: 'Engineering support in the field',
+    engineeringExamples: ['Software update checks', 'Incident logging', 'Operator escalation workflows'],
     paragraphs: [
-      'Our experienced forward deployed engineers work alongside your team to implement practical improvements identified in our risk assessments. That can include software update checks, incident logging, and operator escalation workflows.',
+      'Our experienced forward deployed engineers work alongside your team to implement practical improvements identified in our risk assessments.',
       'Together, we agree a focused scope around your deployment and its risks.'
     ],
     qualification: 'Coverage depends on your operations, policy terms, and availability.',
@@ -60,9 +66,9 @@ export const products = [
       ['Evidence that improves over time', 'Connect operating experience, incidents, and claims to underwriting and model development through agreed data-sharing arrangements.']
     ],
     sectionTitle: 'Research, engineering, and insurance experience',
-    emphasis: ['Corgi (YC S24)', 'Ford', 'the University of Calgary', 'the University of Waterloo'],
+    emphasis: teamExperience.emphasis,
     paragraphs: [
-      'Our team includes award-winning researchers with experience at Corgi (YC S24), Ford, the University of Calgary, and the University of Waterloo. Team members have also built robots for global competitions, bringing firsthand experience of the systems we assess.',
+      `${teamExperience.text} Team members have also built robots for global competitions, bringing firsthand experience of the systems we assess.`,
       'Our underwriters and actuaries bring broad experience across direct property and casualty insurers, life insurers, reinsurers, consulting firms, and insurtechs.'
     ],
     cta: 'Let’s explore a partnership.', ctaLabel: 'Get in touch'

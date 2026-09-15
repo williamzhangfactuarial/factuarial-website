@@ -1,16 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
-import { products } from '../src/products.mjs';
+import { products, teamExperience } from '../src/products.mjs';
 
 test('all published pages have the shared identity, footer and valid local assets and links', async () => {
-  const paths = ['index.html', 'careers.html', 'contact.html', ...products.map(p => `products/${p.slug}.html`)];
+  const paths = ['index.html', 'careers.html', 'contact.html', '404.html', ...products.map(p => `products/${p.slug}.html`)];
   for (const path of paths) {
     const html = await readFile(`public/${path}`, 'utf8');
     assert.match(html, /<span>factuarial\.<\/span>/);
     assert.match(html, /class="footer-brand" href="\/">factuarial\.<\/a>/);
     assert.match(html, /©2026 Factuarial Inc\. All rights reserved\./);
-    assert.equal((html.match(/<h1 /g) || []).length, 1);
+    assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
     assert.doesNotMatch(html, /photo\.png|Hello world|team@factuarial|\[TBD\]|enquir/i);
     for (const [, url] of html.matchAll(/(?:href|src)="(\/[^"?#]*)/g)) {
       const file = url === '/' ? 'public/index.html' : `public${url}${url.includes('.') ? '' : '.html'}`;
@@ -18,9 +18,32 @@ test('all published pages have the shared identity, footer and valid local asset
     }
     assert.match(html, /<button[^>]+aria-controls="products-options"/);
     const nav = html.match(/<nav[\s\S]*?<\/nav>/)[0];
-    assert.ok(nav.indexOf('>Products<') < nav.indexOf('>Careers<'));
+    assert.match(nav, />Who we help</);
+    assert.doesNotMatch(nav, />Products<|↗/);
+    assert.ok(nav.indexOf('>Who we help<') < nav.indexOf('>Careers<'));
     assert.ok(nav.indexOf('>Careers<') < nav.indexOf('>Contact<'));
   }
+});
+test('homepage actions reach a focusable offering section and shared credentials are emphasized', async () => {
+  const home = await readFile('public/index.html', 'utf8');
+  assert.match(home, /class="button-link" href="\/#offerings"[^>]*>Explore our offerings/);
+  assert.match(home, /class="hero-actions">[\s\S]*?href="\/contact"[^>]*>Get in touch/);
+  assert.match(home, /id="offerings" tabindex="-1" aria-label="Our offerings"/);
+  assert.ok(home.indexOf('id="offerings"') < home.indexOf('Our experience'));
+  assert.ok(home.indexOf('Our experience') < home.indexOf('class="company-contact"'));
+  for (const file of ['index.html', 'products/capacity-partners.html']) {
+    const html = await readFile(`public/${file}`, 'utf8');
+    assert.ok(html.replace(/<\/?strong>/g, '').includes(teamExperience.text));
+    for (const name of teamExperience.emphasis) assert.ok(html.includes(`<strong>${name}</strong>`));
+  }
+});
+test('engineering examples preserve the scope and qualification without repeating the inline list', async () => {
+  const html = await readFile('public/products/robotics.html', 'utf8');
+  assert.match(html, /Examples of engineering support/);
+  for (const example of products[0].engineeringExamples) assert.ok(html.includes(`<li>${example}</li>`));
+  assert.doesNotMatch(html, /That can include software update checks/);
+  assert.ok(html.includes(products[0].paragraphs[1]));
+  assert.ok(html.includes(products[0].qualification));
 });
 test('Careers opens an email draft with only recipient and subject prefilled', async () => {
   const html = await readFile('public/careers.html', 'utf8');

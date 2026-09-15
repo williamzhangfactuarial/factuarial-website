@@ -4,6 +4,20 @@ const submit = form.querySelector('[type="submit"]');
 const selectedAudience = new URLSearchParams(location.search).get('audience');
 if (['robotics', 'broker', 'capacity', 'other'].includes(selectedAudience)) form.elements.audience.value = selectedAudience;
 
+const audienceCopy = {
+  robotics: ['Tell us about your robots and their deployment.', 'Describe their work, operating environment, and deployment stage.'],
+  broker: ['Tell us about your client and the placement.', 'Describe the account and the support you need.'],
+  capacity: ['Tell us about the partnership you have in mind.', 'Describe your appetite and the robotics risks you are interested in.'],
+  other: ['Tell us who you are and what you’re working on.', 'Tell us what you’d like to discuss.']
+};
+function updateAudienceCopy() {
+  const copy = audienceCopy[form.elements.audience.value] || audienceCopy.other;
+  document.querySelector('#contact-intro').textContent = copy[0];
+  document.querySelector('#message-guidance').textContent = copy[1];
+}
+form.elements.audience.addEventListener('change', updateAudienceCopy);
+updateAudienceCopy();
+
 let token = '';
 let widget;
 let sending = false;
@@ -74,7 +88,8 @@ form.addEventListener('submit', async (event) => {
       return;
     }
     form.reset();
-    status.textContent = 'Thank you. Your message has been sent.';
+    updateAudienceCopy();
+    status.textContent = 'Thank you. Your message has been sent. We’ll reply to the email address you provided.';
     status.scrollIntoView({ block: 'nearest' });
   } catch { status.textContent = unavailable; status.scrollIntoView({ block: 'nearest' }); }
   finally {
