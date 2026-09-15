@@ -25,9 +25,11 @@ checks form validation, delivery handling, routes, assets, and shared branding.
 The form uses a restricted Cloudflare Email binding and Turnstile. Configure
 `TURNSTILE_SITE_KEY` as a Worker variable and `TURNSTILE_SECRET_KEY` as a Worker
 secret. The EMAIL binding must only allow `contact@factuarial.insure` as its
-destination. Verify that recipient with Cloudflare and onboard
-`forms.factuarial.insure` for sending from `website@forms.factuarial.insure`.
-Preserve the apex domain's Google Workspace mail records.
+destination. The verified recipient is `contact@factuarial.insure`.
+Email Routing is enabled only on `forms.factuarial.insure` for sending from
+`website@forms.factuarial.insure`. The apex domain keeps its Google Workspace
+mail records. Sending to this verified destination uses Cloudflare's free
+[Email Routing service](https://developers.cloudflare.com/email-service/platform/pricing/).
 
 Without the email binding or Turnstile configuration, the form fails closed
 and offers the direct email address. It does not report a successful send.
