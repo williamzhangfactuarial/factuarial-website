@@ -68,7 +68,7 @@ export async function handleContact(request, env, verifyFetch = fetch) {
     const verification = await check.json();
     if (!verification.success || verification.hostname !== new URL(siteOrigin).hostname || verification.action !== 'contact') return json({ message: 'Verification expired or failed. Please try again.' }, 400);
     const text = `Name: ${fields.name}\nEmail: ${fields.email}\nCompany or organization: ${fields.company || 'Not provided'}\nAudience: ${AUDIENCES[fields.audience]}\n\nMessage:\n${fields.message}`;
-    await env.EMAIL.send({ to: DESTINATION, from: { email: SENDER, name: 'Factuarial website' }, replyTo: fields.email, subject: `Website enquiry: ${AUDIENCES[fields.audience]}`, text });
+    await env.EMAIL.send({ to: DESTINATION, from: { email: SENDER, name: 'Factuarial website' }, replyTo: fields.email, subject: `Website inquiry: ${AUDIENCES[fields.audience]}`, text });
     return json({ ok: true });
   } catch { return json({ message: unavailable }, 503); }
 }

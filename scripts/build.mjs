@@ -2,7 +2,8 @@ import { mkdir, writeFile, rm } from 'node:fs/promises';
 import { products } from '../src/products.mjs';
 
 const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
-const link = (href, label, extra = '') => `<a class="text-link" href="${href}" ${extra}>${escape(label)} <span aria-hidden="true">→</span></a>`;
+const link = (href, label, extra = '', className = 'text-link') => `<a class="${className}" href="${href}" ${extra}>${escape(label)} <span aria-hidden="true">→</span></a>`;
+const emphasize = (text, phrases = []) => phrases.reduce((html, phrase) => html.split(escape(phrase)).join(`<strong>${escape(phrase)}</strong>`), escape(text));
 const illustration = (name, alt) => `<figure class="illustration"><img src="/assets/images/${name}-1774.webp" srcset="/assets/images/${name}-900.webp 900w, /assets/images/${name}-1774.webp 1774w" sizes="(max-width: 1152px) calc(100vw - 48px), 1080px" width="1774" height="887" alt="${escape(alt)}" fetchpriority="high" decoding="async"></figure>`;
 
 function shell(title, description, path, content, section) {
@@ -40,6 +41,7 @@ function shell(title, description, path, content, section) {
             ${products.map(p => `<a href="/products/${p.slug}" ${path === '/products/' + p.slug ? 'aria-current="page"' : ''}>${escape(p.label)}<span aria-hidden="true">↗</span></a>`).join('\n            ')}
           </div>
         </div>
+        <a class="nav-link" href="/careers" ${section === 'careers' ? 'aria-current="page"' : ''}>Careers</a>
         <a class="nav-link" href="/contact" ${section === 'contact' ? 'aria-current="page"' : ''}>Contact</a>
       </nav>
     </header>
@@ -51,30 +53,34 @@ function shell(title, description, path, content, section) {
 `.replace(/[ \t]+$/gm, '');
 }
 
-const companyIntro = 'We are a team of researchers, underwriters, actuaries, and engineers developing risk assessments and insurance solutions for robots operating in the real world.';
+const companyIntro = 'We are a group of researchers, underwriters, actuaries, and engineers developing risk assessments and insurance solutions for robots operating in the real world.';
 const home = `
+      <div class="opening">
       <section class="hero company-hero" aria-labelledby="page-title">
         <h1 id="page-title">Insurance for<br>physical AI.</h1>
         <p class="intro">${companyIntro}</p>
       </section>
       ${illustration('company', 'People and robots working together across a workshop and a public space.')}
+      </div>
       <section class="offerings" aria-label="Our offerings">
-        ${products.map(p => `<article class="offering"><h2>For ${escape(p.label.toLowerCase())}</h2><div><p>${escape(p.summary)}</p>${link('/products/' + p.slug, 'Our offering', `aria-label="Our offering for ${escape(p.label.toLowerCase())}"`)}</div></article>`).join('\n        ')}
+        ${products.map(p => `<article class="offering"><h2>For ${escape(p.label.toLowerCase())}</h2><div><p>${p.slug === 'robotics' ? `${escape(p.summary.replace(/ they do\.$/, ''))}<br class="desktop-break"> <span class="keep-together">they do.</span>` : escape(p.summary)}</p>${link('/products/' + p.slug, 'Our offering', `aria-label="Our offering for ${escape(p.label.toLowerCase())}"`)}</div></article>`).join('\n        ')}
       </section>
-      <section class="company-contact"><h2>We’d love to hear from you.</h2><p><a href="/contact">Get in touch</a> or email us at <a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</p></section>`;
+      <section class="company-contact"><h2>We’d love to hear from you.</h2><p><a class="button-link" href="/contact">Get in touch</a> <span>or email us at <a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</span></p></section>`;
 
 await mkdir('public/products', { recursive: true });
 await writeFile('public/index.html', shell('Insurance for physical AI', companyIntro, '/', home, 'company'));
 for (const p of products) {
   const content = `
-      <section class="hero product-hero" aria-labelledby="page-title"><p class="eyebrow">For ${escape(p.label.toLowerCase())}</p><h1 id="page-title">${escape(p.title)}</h1><p class="intro">${escape(p.description)}</p></section>
+      <div class="opening">
+      <section class="hero product-hero" aria-labelledby="page-title"><p class="eyebrow">For ${escape(p.label.toLowerCase())}</p><h1 id="page-title">${escape(p.title)}</h1><p class="intro">${escape(p.description)}</p>${p.statement ? `<p class="hero-statement"><strong>${escape(p.statement)}</strong></p>` : ''}</section>
       ${illustration(p.image, p.alt)}
+      </div>
       <section class="offering-details" aria-label="${escape(p.title)}">
-        <table><thead><tr><th scope="col">${p.columns[0]}</th><th scope="col">${p.columns[1]}</th></tr></thead><tbody>${p.rows.map(([a,b]) => `<tr><th scope="row">${escape(a)}</th><td><span class="mobile-column-label" aria-hidden="true">${p.columns[1]}</span>${escape(b)}</td></tr>`).join('')}</tbody></table>
+        <table class="${p.slug === 'robotics' ? 'coverage-table' : 'needs-table'}"><thead><tr><th scope="col">${p.columns[0]}</th><th scope="col">${p.columns[1]}</th></tr></thead><tbody>${p.rows.map(([a,b]) => `<tr><th scope="row">${escape(a)}</th><td><span class="mobile-column-label" aria-hidden="true">${p.columns[1]}</span>${escape(b)}</td></tr>`).join('')}</tbody></table>
         ${p.note ? `<p class="table-note">${escape(p.note)}</p>` : ''}
       </section>
-      <section class="support-section"><h2>${escape(p.sectionTitle)}</h2><div class="prose">${p.paragraphs.map(t => `<p>${escape(t)}</p>`).join('')}${p.qualification ? `<p class="qualification">${escape(p.qualification)}</p>` : ''}</div></section>
-      <section class="closing-cta"><h2>${escape(p.cta)}</h2>${link('/contact?audience=' + p.audience, p.ctaLabel)}</section>`;
+      <section class="support-section"><h2>${escape(p.sectionTitle)}</h2><div class="prose">${p.paragraphs.map(t => `<p>${emphasize(t, p.emphasis)}</p>`).join('')}${p.qualification ? `<p class="qualification">${escape(p.qualification)}</p>` : ''}</div></section>
+      <section class="closing-cta"><h2>${escape(p.cta)}</h2>${link('/contact?audience=' + p.audience, p.ctaLabel, '', 'button-link')}</section>`;
   await writeFile(`public/products/${p.slug}.html`, shell(p.title, p.description, '/products/' + p.slug, content, 'products'));
 }
 
@@ -90,14 +96,17 @@ const contact = `
         ${field('audience', 'I’m a…', '<select id="audience" name="audience" required aria-describedby="audience-error"><option value="">Select an option</option><option value="robotics">Robotics company or operator</option><option value="broker">Broker</option><option value="capacity">Capacity partner</option><option value="other">Other</option></select>')}
         ${field('message', 'Message', '<textarea id="message" name="message" rows="6" maxlength="5000" required aria-describedby="message-error"></textarea>')}
         <div class="honey" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
-        <p class="form-note">We’ll use these details to respond to your enquiry.</p>
+        <p class="form-note">We’ll use these details to respond to your inquiry.</p>
         <div id="turnstile-widget"></div>
         <div class="form-actions"><button class="send-button" type="submit">Send message <span aria-hidden="true">→</span></button><p id="form-status" role="status" aria-live="polite"></p></div>
         <noscript><p>Please enable JavaScript to send this form, or email <a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</p></noscript>
       </form>`;
 await writeFile('public/contact.html', shell('Contact', 'Get in touch with Factuarial about robotics insurance, a placement, or a capacity partnership.', '/contact', contact, 'contact'));
+const careersIntro = 'We’d like to hear from people with backgrounds in robotics, software, research, or insurance.';
+const careers = `<section class="careers-content" aria-labelledby="page-title"><h1 class="visually-hidden" id="page-title">Careers</h1><p>${careersIntro}</p><p>Tell us about yourself, something you’ve worked on, and what you’d like to work on next.</p>${link('mailto:contact@factuarial.insure?subject=Careers', 'Introduce yourself')}</section>`;
+await writeFile('public/careers.html', shell('Careers', careersIntro, '/careers', careers, 'careers'));
 await writeFile('public/404.html', shell('Page not found', 'Find your way back to Factuarial.', '/404', '<section class="hero error-page"><p class="eyebrow">404</p><h1>Page not found.</h1><p>This page may have moved.</p>' + link('/', 'Back to Company') + '</section>', ''));
 await writeFile('public/robots.txt', 'User-agent: *\nAllow: /\nSitemap: https://factuarial.insure/sitemap.xml\n');
-await writeFile('public/sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ['/', ...products.map(p => '/products/' + p.slug), '/contact'].map(path => `<url><loc>https://factuarial.insure${path}</loc></url>`).join('') + '</urlset>\n');
+await writeFile('public/sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ['/', ...products.map(p => '/products/' + p.slug), '/careers', '/contact'].map(path => `<url><loc>https://factuarial.insure${path}</loc></url>`).join('') + '</urlset>\n');
 await rm('public/photo.png', { force: true });
-console.log('Built Company, three product pages, Contact, and 404.');
+console.log('Built Company, three product pages, Careers, Contact, and 404.');

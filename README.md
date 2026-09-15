@@ -1,8 +1,9 @@
 # factuarial.insure
 
-Five static pages served by a Cloudflare Worker at factuarial.insure.
+Six static pages served by a Cloudflare Worker at factuarial.insure.
 The Company page is home. Products opens a menu for robotics companies,
-brokers, and capacity partners. Contact delivers enquiries to the company inbox.
+brokers, and capacity partners. Careers opens an email draft with the Careers
+subject. Contact delivers inquiries to the company inbox.
 
 Preview locally:
 

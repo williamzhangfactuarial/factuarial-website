@@ -28,3 +28,35 @@ menu.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') { trigger.focus(); setOpen(false); event.preventDefault(); }
   if (event.key === 'ArrowDown' && event.target === trigger) { setOpen(true); panel.querySelector('a').focus(); event.preventDefault(); }
 });
+panel.addEventListener('click', (event) => { if (event.target.closest('a')) setOpen(false); });
+
+// Fit the complete opening only when the text leaves room for a useful image.
+const opening = document.querySelector('.opening');
+if (opening) {
+  const header = document.querySelector('.site-header');
+  const hero = opening.querySelector('.hero');
+  let frame;
+  const fitOpening = () => {
+    const viewportHeight = document.documentElement.clientHeight;
+    const headerBottom = header.getBoundingClientRect().bottom + window.scrollY;
+    const style = getComputedStyle(opening);
+    const spacing = ['--opening-top', '--opening-gap', '--opening-bottom'].reduce((total, name) => total + parseFloat(style.getPropertyValue(name)), 0);
+    const available = Math.floor(viewportHeight - headerBottom - hero.getBoundingClientRect().height - spacing);
+    const fits = window.innerWidth >= 1024 && viewportHeight >= 760 && available >= 220;
+    opening.classList.toggle('is-fitted', fits);
+    if (fits) {
+      opening.style.setProperty('--opening-height', `${Math.ceil(viewportHeight - headerBottom)}px`);
+      opening.style.setProperty('--illustration-height', `${Math.min(available, (opening.clientWidth + 20) / 2)}px`);
+    } else {
+      opening.style.removeProperty('--opening-height');
+      opening.style.removeProperty('--illustration-height');
+    }
+  };
+  const scheduleFit = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(fitOpening); };
+  const observer = new ResizeObserver(scheduleFit);
+  observer.observe(header);
+  observer.observe(hero);
+  window.addEventListener('resize', scheduleFit);
+  document.fonts.ready.then(scheduleFit);
+  fitOpening();
+}

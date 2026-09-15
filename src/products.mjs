@@ -26,6 +26,7 @@ export const products = [
     slug: 'brokers', audience: 'broker', label: 'Brokers', image: 'brokers',
     title: 'Specialist support for your robotics placements.',
     description: 'We’re developing insurance programs that pair specialist underwriting with practical engineering support for your robotics clients.',
+    statement: 'You lead the placement and client relationship.',
     summary: 'We help you get robotics clients covered. You lead the client relationship.',
     alt: 'An open robotics assessment dossier on a desk, with an engineer working nearby.',
     columns: ['What you need', 'How we help'],
@@ -38,7 +39,7 @@ export const products = [
     ],
     sectionTitle: 'Working alongside you',
     paragraphs: [
-      'You lead the placement and client relationship. We coordinate technical discussions and engineering engagements with you and your client, keeping you involved in coverage, quotations, and renewals.',
+      'We coordinate technical discussions and engineering engagements with you and your client, keeping you involved in coverage, quotations, and renewals.',
       'We do not solicit your clients to change brokers or use contacts you share for unrelated marketing.',
       'When robotics companies approach us directly, we involve their existing broker in placement discussions. If they need a broker, we help them find one with their agreement.'
     ],
@@ -59,6 +60,7 @@ export const products = [
       ['Evidence that improves over time', 'Connect operating experience, incidents, and claims to underwriting and model development through agreed data-sharing arrangements.']
     ],
     sectionTitle: 'Research, engineering, and insurance experience',
+    emphasis: ['Corgi (YC S24)', 'Ford', 'the University of Calgary', 'the University of Waterloo'],
     paragraphs: [
       'Our team includes award-winning researchers with experience at Corgi (YC S24), Ford, the University of Calgary, and the University of Waterloo. Team members have also built robots for global competitions, bringing firsthand experience of the systems we assess.',
       'Our underwriters and actuaries bring broad experience across direct property and casualty insurers, life insurers, reinsurers, consulting firms, and insurtechs.'

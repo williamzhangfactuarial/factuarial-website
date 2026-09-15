@@ -16,7 +16,7 @@ function setup({ allowed = true, verification = {}, failEmail = false } = {}) {
   return { env, sent, verify, verified: () => verified };
 }
 
-test('valid enquiry sends once to the fixed destination with visitor Reply-To', async () => {
+test('valid inquiry sends once to the fixed destination with visitor Reply-To', async () => {
   const s = setup();
   const response = await handleContact(request({ ...valid, to: 'someone@example.com', from: 'attacker@example.com' }), s.env, s.verify);
   assert.equal(response.status, 200);
@@ -25,6 +25,7 @@ test('valid enquiry sends once to the fixed destination with visitor Reply-To', 
   assert.equal(s.sent[0].to, 'contact@factuarial.insure');
   assert.equal(s.sent[0].from.email, 'website@forms.factuarial.insure');
   assert.equal(s.sent[0].replyTo, valid.email);
+  assert.equal(s.sent[0].subject, 'Website inquiry: Other');
   assert.match(s.sent[0].text, /Contact form delivery test\./);
   assert.equal(response.headers.get('cache-control'), 'no-store');
 });

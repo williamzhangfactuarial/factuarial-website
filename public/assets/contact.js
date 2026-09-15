@@ -54,6 +54,7 @@ form.addEventListener('submit', async (event) => {
   if (!form.reportValidity()) return;
   if (!token) {
     status.textContent = widget === undefined ? unavailable : 'Please complete verification, or email contact@factuarial.insure.';
+    status.scrollIntoView({ block: 'nearest' });
     if (widget !== undefined) window.turnstile.reset(widget);
     return;
   }
@@ -69,11 +70,13 @@ form.addEventListener('submit', async (event) => {
     if (!response.ok) {
       showErrors(result.errors || {});
       status.textContent = result.message || unavailable;
+      if (!Object.keys(result.errors || {}).length) status.scrollIntoView({ block: 'nearest' });
       return;
     }
     form.reset();
     status.textContent = 'Thank you. Your message has been sent.';
-  } catch { status.textContent = unavailable; }
+    status.scrollIntoView({ block: 'nearest' });
+  } catch { status.textContent = unavailable; status.scrollIntoView({ block: 'nearest' }); }
   finally {
     sending = false;
     submit.disabled = false;
