@@ -1,0 +1,14 @@
+{
+  "name": "factuarial-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "npm run build && wrangler dev --port 8787 --var SITE_ORIGIN:http://localhost:8787",
+    "test": "node --test",
+    "deploy": "npm run build && npm test && wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.131.2"
+  }
+}

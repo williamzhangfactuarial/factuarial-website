@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F5F4EF">
+  <meta name="color-scheme" content="light">
+  <title>Contact | factuarial.</title>
+  <meta name="description" content="Get in touch with Factuarial about robotics insurance, a placement, or a capacity partnership.">
+  <link rel="canonical" href="https://factuarial.insure/contact">
+  <meta property="og:title" content="Contact | factuarial.">
+  <meta property="og:description" content="Get in touch with Factuarial about robotics insurance, a placement, or a capacity partnership.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://factuarial.insure/contact">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/lmroman-regular.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="/assets/fonts/ibm-plex-mono.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="/assets/site.js" defer></script>
+  <script src="/assets/contact.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="factuarial. home"><img src="/assets/logo.svg" width="32" height="56" alt=""><span>factuarial.</span></a>
+      <nav aria-label="Main navigation">
+        <a class="nav-link" href="/" >Company</a>
+        <div class="products-menu">
+          <button class="nav-link products-trigger " type="button" aria-expanded="false" aria-controls="products-options">Products<span class="chevron" aria-hidden="true"></span></button>
+          <div class="products-panel" id="products-options" hidden>
+            <a href="/products/robotics" >Robotics companies &amp; operators<span aria-hidden="true">↗</span></a>
+            <a href="/products/brokers" >Brokers<span aria-hidden="true">↗</span></a>
+            <a href="/products/capacity-partners" >Capacity partners<span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="/contact" aria-current="page">Contact</a>
+      </nav>
+    </header>
+    <main id="main" tabindex="-1">
+      <section class="hero contact-hero" aria-labelledby="page-title"><h1 id="page-title">Let’s talk.</h1><p class="intro">Tell us who you are and what you’re working on.</p><p class="contact-email">You can also reach us at<br><a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</p></section>
+      <form id="contact-form" class="contact-form" action="/api/contact" method="post" aria-label="Contact factuarial">
+        <div class="field-pair">
+          <div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" maxlength="120" required aria-describedby="name-error"><span class="field-error" id="name-error"></span></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="email-error"><span class="field-error" id="email-error"></span></div>
+        </div>
+        <div class="field"><label for="company">Company or organization <span class="optional">(optional)</span></label><input id="company" name="company" autocomplete="organization" maxlength="160" aria-describedby="company-error"><span class="field-error" id="company-error"></span></div>
+        <div class="field"><label for="audience">I’m a…</label><select id="audience" name="audience" required aria-describedby="audience-error"><option value="">Select an option</option><option value="robotics">Robotics company or operator</option><option value="broker">Broker</option><option value="capacity">Capacity partner</option><option value="other">Other</option></select><span class="field-error" id="audience-error"></span></div>
+        <div class="field"><label for="message">Message</label><textarea id="message" name="message" rows="6" maxlength="5000" required aria-describedby="message-error"></textarea><span class="field-error" id="message-error"></span></div>
+        <div class="honey" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+        <p class="form-note">We’ll use these details to respond to your enquiry.</p>
+        <div id="turnstile-widget"></div>
+        <div class="form-actions"><button class="send-button" type="submit">Send message <span aria-hidden="true">→</span></button><p id="form-status" role="status" aria-live="polite"></p></div>
+        <noscript><p>Please enable JavaScript to send this form, or email <a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</p></noscript>
+      </form></main>
+    <footer class="site-footer"><a class="footer-brand" href="/">factuarial.</a><p>©2026 Factuarial Inc. All rights reserved.</p></footer>
+  </div>
+</body>
+</html>
