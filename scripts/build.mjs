@@ -1,6 +1,8 @@
-import { mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdir, writeFile, rm, readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { products } from '../src/products.mjs';
 
+const faviconVersion = createHash('sha256').update(await readFile('public/favicon.svg')).digest('hex').slice(0, 8);
 const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 const link = (href, label, extra = '', className = 'text-link') => `<a class="${className}" href="${href}" ${extra}>${escape(label)} <span aria-hidden="true">→</span></a>`;
 const emphasize = (text, phrases = []) => phrases.reduce((html, phrase) => html.split(escape(phrase)).join(`<strong>${escape(phrase)}</strong>`), escape(text));
@@ -21,7 +23,7 @@ function shell(title, description, path, content, section) {
   <meta property="og:description" content="${escape(description)}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://factuarial.insure${path}">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.svg?v=${faviconVersion}" type="image/svg+xml">
   <link rel="preload" href="/assets/fonts/lmroman-regular.woff" as="font" type="font/woff" crossorigin>
   <link rel="preload" href="/assets/fonts/ibm-plex-mono.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/site.css">
