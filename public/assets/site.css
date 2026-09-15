@@ -98,6 +98,7 @@ tbody td{color:var(--graphite)}
 .closing-cta{padding:56px 0 64px}
 .closing-cta h2{font-size:2.25rem;margin-bottom:20px;max-width:740px}
 .contact-hero{padding-top:48px;max-width:760px}
+.contact-hero h1:focus{outline:none}
 .contact-email{font-size:.875rem;color:var(--stone);margin-top:20px}
 .contact-email a{overflow-wrap:anywhere}
 .contact-form{max-width:740px;padding:36px 0 64px}

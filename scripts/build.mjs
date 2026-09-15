@@ -61,14 +61,14 @@ const home = `
       <section class="hero company-hero" aria-labelledby="page-title">
         <h1 id="page-title">Insurance for<br>physical AI.</h1>
         <p class="intro">${companyIntro}</p>
-        <div class="hero-actions">${link('/#offerings', 'Explore our offerings', '', 'button-link')}${link('/contact', 'Get in touch')}</div>
+        <div class="hero-actions">${link('/#offerings', 'Explore our offerings', '', 'button-link')}${link('/contact#page-title', 'Get in touch')}</div>
       </section>
       ${illustration('company', 'People and robots working together across a workshop and a public space.')}
       </div>
       <section class="offerings" id="offerings" tabindex="-1" aria-label="Our offerings">
         ${products.map(p => `<article class="offering"><h2>For ${escape(p.label.toLowerCase())}</h2><div><p>${p.slug === 'robotics' ? `${escape(p.summary.replace(/ they do\.$/, ''))}<br class="desktop-break"> <span class="keep-together">they do.</span>` : escape(p.summary)}</p>${link('/products/' + p.slug, 'Our offering', `aria-label="Our offering for ${escape(p.label.toLowerCase())}"`)}</div></article>`).join('\n        ')}
       </section>
-      <section class="company-contact"><h2>We’d love to hear from you.</h2><p><a class="button-link" href="/contact">Get in touch</a> <span>or email us at <a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</span></p></section>`;
+      <section class="company-contact"><h2>We’d love to hear from you.</h2><p><a class="button-link" href="/contact#page-title">Get in touch</a> <span>or email us at <a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</span></p></section>`;
 
 await mkdir('public/products', { recursive: true });
 await writeFile('public/index.html', shell('Insurance for physical AI', companyIntro, '/', home, 'company'));
@@ -83,13 +83,13 @@ for (const p of products) {
         ${p.note ? `<p class="table-note">${escape(p.note)}</p>` : ''}
       </section>
       <section class="support-section"><h2>${escape(p.sectionTitle)}</h2><div class="prose">${p.paragraphs.map((t, i) => `<p>${emphasize(t, p.emphasis)}</p>${i === 0 && p.engineeringExamples ? `<section class="engineering-examples" aria-labelledby="engineering-examples-title"><h3 id="engineering-examples-title">Examples of engineering support</h3><ul>${p.engineeringExamples.map(example => `<li>${escape(example)}</li>`).join('')}</ul></section>` : ''}`).join('')}${p.qualification ? `<p class="qualification">${escape(p.qualification)}</p>` : ''}</div></section>
-      <section class="closing-cta"><h2>${escape(p.cta)}</h2>${link('/contact?audience=' + p.audience, p.ctaLabel, '', 'button-link')}</section>`;
+      <section class="closing-cta"><h2>${escape(p.cta)}</h2>${link('/contact?audience=' + p.audience + '#page-title', p.ctaLabel, '', 'button-link')}</section>`;
   await writeFile(`public/products/${p.slug}.html`, shell(p.title, p.description, '/products/' + p.slug, content, 'products'));
 }
 
 const field = (id, label, input) => `<div class="field"><label for="${id}">${label}</label>${input}<span class="field-error" id="${id}-error"></span></div>`;
 const contact = `
-      <section class="hero contact-hero" aria-labelledby="page-title"><h1 id="page-title">Let’s talk.</h1><p class="intro" id="contact-intro">Tell us who you are and what you’re working on.</p><p class="contact-email">You can also reach us at<br><a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</p></section>
+      <section class="hero contact-hero" aria-labelledby="page-title"><h1 id="page-title" tabindex="-1">Let’s talk.</h1><p class="intro" id="contact-intro">Tell us who you are and what you’re working on.</p><p class="contact-email">You can also reach us at<br><a href="mailto:contact@factuarial.insure">contact@factuarial.insure</a>.</p></section>
       <form id="contact-form" class="contact-form" action="/api/contact" method="post" aria-label="Contact factuarial">
         <div class="field-pair">
           ${field('name', 'Name', '<input id="name" name="name" autocomplete="name" maxlength="120" required aria-describedby="name-error">')}

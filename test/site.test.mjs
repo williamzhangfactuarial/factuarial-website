@@ -27,7 +27,10 @@ test('all published pages have the shared identity, footer and valid local asset
 test('homepage actions reach offerings and credentials remain on Capacity Partners', async () => {
   const home = await readFile('public/index.html', 'utf8');
   assert.match(home, /class="button-link" href="\/#offerings"[^>]*>Explore our offerings/);
-  assert.match(home, /class="hero-actions">[\s\S]*?href="\/contact"[^>]*>Get in touch/);
+  assert.match(home, /class="hero-actions">[\s\S]*?href="\/contact#page-title"[^>]*>Get in touch/);
+  assert.match(home, /class="company-contact">[\s\S]*?href="\/contact#page-title"[^>]*>Get in touch/);
+  const contact = await readFile('public/contact.html', 'utf8');
+  assert.match(contact, /<h1 id="page-title" tabindex="-1">Let’s talk\.<\/h1>/);
   assert.match(home, /id="offerings" tabindex="-1" aria-label="Our offerings"/);
   assert.doesNotMatch(home, /company-experience|Our experience/);
   assert.ok(home.indexOf('id="offerings"') < home.indexOf('class="company-contact"'));
@@ -57,7 +60,7 @@ test('offering links and product contact links target their respective audiences
   for (const p of products) {
     assert.ok(home.includes(`href="/products/${p.slug}"`));
     const html = await readFile(`public/products/${p.slug}.html`, 'utf8');
-    assert.ok(html.includes(`href="/contact?audience=${p.audience}"`));
+    assert.ok(html.includes(`href="/contact?audience=${p.audience}#page-title"`));
     assert.equal((html.match(/<th scope="row">/g) || []).length, 5);
   }
 });
