@@ -87,6 +87,12 @@ export default {
     const url = new URL(request.url);
     const origin = new URL(env.SITE_ORIGIN || 'https://factuarial.insure');
     if (origin.protocol === 'https:' && url.hostname === origin.hostname && url.protocol === 'http:') { url.protocol = 'https:'; return Response.redirect(url.toString(), 301); }
+    if (env.MAINTENANCE_MODE === 'true') {
+      const message = 'This website is temporarily unavailable.';
+      return secure(url.pathname.startsWith('/api/') ? json({ message }, 503) : new Response(request.method === 'HEAD' ? null : message + '\n', {
+        status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' }
+      }));
+    }
     if (url.pathname === '/api/contact') return secure(await handleContact(request, env));
     if (url.pathname === '/api/contact/config') {
       if (request.method !== 'GET') return secure(json({ message: 'Method not allowed.' }, 405, { Allow: 'GET' }));

@@ -1,5 +1,9 @@
 # factuarial.insure
 
+The public site is temporarily offline. `MAINTENANCE_MODE` in `wrangler.jsonc`
+is `"true"`, so all pages, assets, and the contact API return HTTP 503. To restore
+the site, set it to `"false"` and run `npm run deploy`.
+
 Six static pages served by a Cloudflare Worker at factuarial.insure.
 The Company page is home. Who we help opens a menu for robotics companies,
 brokers, and capacity partners. Careers opens an email draft with the Careers

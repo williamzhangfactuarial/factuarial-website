@@ -101,3 +101,27 @@ test('contact config exposes only the public sitekey and disallows mutations', a
   assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
   assert.equal((await worker.fetch(new Request('https://factuarial.insure/api/contact/config', { method: 'POST' }), s.env)).status, 405);
 });
+test('maintenance mode blocks pages, assets and contact submissions before accessing bindings', async () => {
+  const env = {
+    MAINTENANCE_MODE: 'true',
+    get ASSETS() { assert.fail('Maintenance must not serve assets'); },
+    get EMAIL() { assert.fail('Maintenance must not access email'); },
+    get CONTACT_RATE_LIMITER() { assert.fail('Maintenance must not process submissions'); }
+  };
+  for (const path of ['/', '/contact', '/careers', '/products/robotics', '/assets/site.css', '/api/contact/config', '/api/contact']) {
+    const response = await worker.fetch(new Request('https://factuarial.insure' + path, { method: path === '/api/contact' ? 'POST' : 'GET' }), env);
+    assert.equal(response.status, 503);
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.match(await response.text(), /This website is temporarily unavailable\./);
+  }
+  const response = await worker.fetch(new Request('https://factuarial.insure/', { method: 'HEAD' }), env);
+  assert.equal(response.status, 503);
+  assert.equal(await response.text(), '');
+});
+test('disabling maintenance restores normal asset serving', async () => {
+  const response = await worker.fetch(new Request('https://factuarial.insure/'), {
+    MAINTENANCE_MODE: 'false', ASSETS: { fetch: async () => new Response('Site content') }
+  });
+  assert.equal(response.status, 200);
+  assert.equal(await response.text(), 'Site content');
+});

@@ -5,6 +5,7 @@
   "workers_dev": false,
   "preview_urls": false,
   "vars": {
+    "MAINTENANCE_MODE": "true",
     "SITE_ORIGIN": "https://factuarial.insure",
     "TURNSTILE_SITE_KEY": "0x4AAAAAAE07zEMYC3uaIO1r"
   },
